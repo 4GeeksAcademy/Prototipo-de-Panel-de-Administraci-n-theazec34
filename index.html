@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .badge {
+            @apply px-2 py-1 rounded-full text-xs font-semibold;
+        }
+        .badge-active { @apply bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100; }
+        .badge-inactive { @apply bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100; }
+        .badge-pending { @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100; }
+        .badge-completed { @apply bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100; }
+        .badge-error { @apply bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100; }
+        .badge-warning { @apply bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100; }
+        .btn-menu {
+            @apply text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200;
+        }
+        .dropdown-menu {
+            @apply absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10;
+        }
+        .dropdown-menu button {
+            @apply block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700;
+        }
+        .modal {
+            @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+        }
+        .modal-content {
+            @apply bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full;
+        }
+        .input-field {
+            @apply w-full p-2 mb-4 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700;
+        }
+        .btn-primary {
+            @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
+        }
+        .collapse {
+            @apply overflow-hidden transition-all duration-300;
+        }
+    </style>
+    <title>Admin Panel</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-white dark:bg-gray-800 shadow-md">
+            <div class="p-4">
+                <h2 class="text-xl font-bold">Admin Panel</h2>
+            </div>
+            <nav class="mt-4">
+                <button data-section="dashboard" class="block w-full text-left p-4 bg-blue-500 text-white">Dashboard</button>
+                <button data-section="users" class="block w-full text-left p-4 hover:bg-gray-200 dark:hover:bg-gray-700">Gestión de usuarios</button>
+                <button data-section="agents" class="block w-full text-left p-4 hover:bg-gray-200 dark:hover:bg-gray-700">Gestión de agentes</button>
+                <button data-section="skills" class="block w-full text-left p-4 hover:bg-gray-200 dark:hover:bg-gray-700">Skills</button>
+                <button data-section="contracts" class="block w-full text-left p-4 hover:bg-gray-200 dark:hover:bg-gray-700">Contrataciones</button>
+                <button data-section="errors" class="block w-full text-left p-4 hover:bg-gray-200 dark:hover:bg-gray-700">Log de errores</button>
+            </nav>
+        </aside>
+        <div class="flex-1 flex flex-col">
+            <header class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
+                <h1 class="text-xl font-bold">Topbar</h1>
+                <button onclick="toggleTheme()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded">Toggle Dark Mode</button>
+            </header>
+            <main class="flex-1 p-4">
+                <section id="dashboard">
+                    <h1 class="text-3xl font-bold mb-2">Dashboard</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Overview of your admin panel</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Total Users</h3>
+                            <p class="text-2xl font-bold">1,234</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Total Agents</h3>
+                            <p class="text-2xl font-bold">567</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Active Skills</h3>
+                            <p class="text-2xl font-bold">89</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold mb-2">Pending Contracts</h3>
+                            <p class="text-2xl font-bold">12</p>
+                        </div>
+                    </div>
+                    <div class="h-56 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center text-gray-500 dark:text-gray-400">
+                        Chart Placeholder
+                    </div>
+                </section>
+                <section id="users" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Gestión de usuarios</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Lista de Usuarios</h3>
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Agregar Usuario</button>
+                        </div>
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-2">Nombre</th>
+                                    <th class="text-left py-2">Email</th>
+                                    <th class="text-left py-2">Rol</th>
+                                    <th class="text-left py-2">Estado</th>
+                                    <th class="text-left py-2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">Juan Pérez</td>
+                                    <td class="py-2">juan@example.com</td>
+                                    <td class="py-2">Admin</td>
+                                    <td class="py-2"><span class="badge badge-active">Activo</span></td>
+                                    <td class="py-2">
+                                        <button class="btn-menu" onclick="toggleDropdown('user1')">⋮</button>
+                                        <div id="user1" class="dropdown-menu hidden">
+                                            <button data-open-modal="userModal">Editar</button>
+                                            <button>Eliminar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">María García</td>
+                                    <td class="py-2">maria@example.com</td>
+                                    <td class="py-2">Usuario</td>
+                                    <td class="py-2"><span class="badge badge-inactive">Inactivo</span></td>
+                                    <td class="py-2">
+                                        <button class="btn-menu" onclick="toggleDropdown('user2')">⋮</button>
+                                        <div id="user2" class="dropdown-menu hidden">
+                                            <button data-open-modal="userModal">Editar</button>
+                                            <button>Eliminar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Modal for editing user -->
+                    <div id="userModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Editar Usuario</h3>
+                            <form>
+                                <input type="text" placeholder="Nombre" class="input-field">
+                                <input type="email" placeholder="Email" class="input-field">
+                                <select class="input-field">
+                                    <option>Admin</option>
+                                    <option>Usuario</option>
+                                </select>
+                                <button type="submit" class="btn-primary">Guardar</button>
+                                <button type="button" data-close-modal="userModal" class="btn-primary ml-2">Cancelar</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section id="agents" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Gestión de agentes</h2>
+                    <div class="space-y-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Agente 1</h3>
+                                <button class="btn-menu" onclick="toggleDropdown('agent1')">⋮</button>
+                                <div id="agent1" class="dropdown-menu hidden">
+                                    <button data-open-modal="agentModal">Configurar</button>
+                                    <button>Eliminar</button>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-2">Descripción del agente.</p>
+                            <button onclick="toggleCollapse('skills1')" class="mt-2 text-blue-500">Ver Skills</button>
+                            <div id="skills1" class="collapse hidden mt-2">
+                                <ul class="list-disc list-inside">
+                                    <li>Skill 1</li>
+                                    <li>Skill 2</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Agente 2</h3>
+                                <button class="btn-menu" onclick="toggleDropdown('agent2')">⋮</button>
+                                <div id="agent2" class="dropdown-menu hidden">
+                                    <button data-open-modal="agentModal">Configurar</button>
+                                    <button>Eliminar</button>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-2">Descripción del agente.</p>
+                            <button onclick="toggleCollapse('skills2')" class="mt-2 text-blue-500">Ver Skills</button>
+                            <div id="skills2" class="collapse hidden mt-2">
+                                <ul class="list-disc list-inside">
+                                    <li>Skill 3</li>
+                                    <li>Skill 4</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal for configuring agent -->
+                    <div id="agentModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Configurar Agente</h3>
+                            <form>
+                                <input type="text" placeholder="Nombre" class="input-field">
+                                <textarea placeholder="Descripción" class="input-field"></textarea>
+                                <button type="submit" class="btn-primary">Guardar</button>
+                                <button type="button" data-close-modal="agentModal" class="btn-primary ml-2">Cancelar</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section id="skills" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Skills</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Skill 1</h3>
+                                <button class="btn-menu" onclick="toggleDropdown('skill1')">⋮</button>
+                                <div id="skill1" class="dropdown-menu hidden">
+                                    <button>Editar</button>
+                                    <button>Eliminar</button>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-2">Descripción de la skill.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Skill 2</h3>
+                                <button class="btn-menu" onclick="toggleDropdown('skill2')">⋮</button>
+                                <div id="skill2" class="dropdown-menu hidden">
+                                    <button>Editar</button>
+                                    <button>Eliminar</button>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-2">Descripción de la skill.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">Skill 3</h3>
+                                <button class="btn-menu" onclick="toggleDropdown('skill3')">⋮</button>
+                                <div id="skill3" class="dropdown-menu hidden">
+                                    <button>Editar</button>
+                                    <button>Eliminar</button>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 mt-2">Descripción de la skill.</p>
+                        </div>
+                    </div>
+                </section>
+                <section id="contracts" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Contrataciones</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-2">ID</th>
+                                    <th class="text-left py-2">Cliente</th>
+                                    <th class="text-left py-2">Fecha</th>
+                                    <th class="text-left py-2">Estado</th>
+                                    <th class="text-left py-2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">001</td>
+                                    <td class="py-2">Empresa A</td>
+                                    <td class="py-2">2023-10-01</td>
+                                    <td class="py-2"><span class="badge badge-pending">Pendiente</span></td>
+                                    <td class="py-2">
+                                        <button data-open-modal="contractModal">Ver Detalle</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">002</td>
+                                    <td class="py-2">Empresa B</td>
+                                    <td class="py-2">2023-09-15</td>
+                                    <td class="py-2"><span class="badge badge-completed">Completado</span></td>
+                                    <td class="py-2">
+                                        <button data-open-modal="contractModal">Ver Detalle</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Modal for contract details -->
+                    <div id="contractModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Detalle del Contrato</h3>
+                            <p>ID: 001</p>
+                            <p>Cliente: Empresa A</p>
+                            <p>Fecha: 2023-10-01</p>
+                            <p>Estado: Pendiente</p>
+                            <p>Descripción: Detalles del contrato...</p>
+                            <button data-close-modal="contractModal" class="btn-primary">Cerrar</button>
+                        </div>
+                    </div>
+                </section>
+                <section id="errors" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Log de errores</h2>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="border-b border-gray-200 dark:border-gray-700">
+                                    <th class="text-left py-2">Fecha</th>
+                                    <th class="text-left py-2">Tipo</th>
+                                    <th class="text-left py-2">Mensaje</th>
+                                    <th class="text-left py-2">Severidad</th>
+                                    <th class="text-left py-2">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">2023-10-01 10:00</td>
+                                    <td class="py-2">Database</td>
+                                    <td class="py-2">Connection failed</td>
+                                    <td class="py-2"><span class="badge badge-error">Error</span></td>
+                                    <td class="py-2">
+                                        <button data-open-modal="errorModal">Ver Detalle</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 dark:border-gray-700">
+                                    <td class="py-2">2023-09-30 15:30</td>
+                                    <td class="py-2">API</td>
+                                    <td class="py-2">Timeout</td>
+                                    <td class="py-2"><span class="badge badge-warning">Advertencia</span></td>
+                                    <td class="py-2">
+                                        <button data-open-modal="errorModal">Ver Detalle</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Modal for error details -->
+                    <div id="errorModal" class="modal hidden">
+                        <div class="modal-content">
+                            <h3>Detalle del Error</h3>
+                            <p>Fecha: 2023-10-01 10:00</p>
+                            <p>Tipo: Database</p>
+                            <p>Mensaje: Connection failed</p>
+                            <p>Severidad: Error</p>
+                            <p>Stack Trace: ...</p>
+                            <button data-close-modal="errorModal" class="btn-primary">Cerrar</button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        }
+
+        function switchSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('main section');
+            sections.forEach(section => section.classList.add('hidden'));
+            // Show the selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+            // Update active nav button
+            const navLinks = document.querySelectorAll('nav button');
+            navLinks.forEach(link => {
+                link.classList.remove('bg-blue-500', 'text-white');
+                link.classList.add('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+            });
+            const activeLink = document.querySelector(`nav button[data-section="${sectionId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('bg-blue-500', 'text-white');
+                activeLink.classList.remove('hover:bg-gray-200', 'dark:hover:bg-gray-700');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Dropdown functionality
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const isHidden = dropdown.classList.contains('hidden');
+            // Close all dropdowns first
+            document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.add('hidden'));
+            // Toggle the clicked one
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.btn-menu') && !event.target.closest('.dropdown-menu')) {
+                document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.add('hidden'));
+            }
+        });
+
+        // Modal functionality
+        document.addEventListener('click', function(event) {
+            if (event.target.hasAttribute('data-open-modal')) {
+                const modalId = event.target.getAttribute('data-open-modal');
+                document.getElementById(modalId).classList.remove('hidden');
+            }
+            if (event.target.hasAttribute('data-close-modal')) {
+                const modalId = event.target.getAttribute('data-close-modal');
+                document.getElementById(modalId).classList.add('hidden');
+            }
+            // Close modal on backdrop click
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.add('hidden');
+            }
+        });
+
+        // Collapsible functionality
+        function toggleCollapse(id) {
+            const collapse = document.getElementById(id);
+            collapse.classList.toggle('hidden');
+        }
+
+        // Update nav buttons to use switchSection
+        document.querySelectorAll('nav button[data-section]').forEach(button => {
+            button.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                switchSection(sectionId);
+            });
+        });
+    </script>
+</body>
+</html>
